@@ -1,0 +1,169 @@
+Modelo de Base de Datos Mongo
+
+Empresa: Koombler Inc
+Proyecto: Abogados - Bleering
+Estudiante: German Pinilla
+Docente: Andres Sanchez
+
+- user => Usuario
+- documentType => Tipo de documento
+- city => Ciudad
+- country => Pais
+- profile => Perfil
+- state => Estado del usuario
+- schedule => Agenda o cita
+- file => Archivos
+- Chat => Chats / Mensajes
+- Conversation => Conversaciones usuarios
+- StateMesagges => Estados de los mensajes
+- Specialities => Especialidades
+- specialitiesProfessional => Especialidades por usuario
+
+
+/* ***** Colecciones ***** */
+
+user: {
+    idUser: ObjectId(), // Auto increment
+    photo: { type: mongoose.Schema.ObjectId, ref: "file" },
+    firstName: String,
+    lastName: String,
+    idDocumentType: { type: mongoose.Schema.ObjectId, ref: "documentType" },
+    documentNumber: String,
+    birthDate: { type: Date },
+    phoneNumber: String,
+    email: String,
+    address: String,
+    idCountry: { type: mongoose.Schema.ObjectId, ref: "country" },
+    idCity: { type: mongoose.Schema.ObjectId, ref: "city" },
+    idProfile: { type: mongoose.Schema.ObjectId, ref: "profile" },
+    idState: { type: mongoose.Schema.ObjectId, ref: "state" },
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },
+    pass: String,
+}
+
+documentType: {
+    idDocumentType: ObjectId(), // Auto increment
+    nameDocumentType: String,
+    descriptionDocumentType: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },
+}
+
+city: {
+    idCity: ObjectId(), // Auto increment
+    idCountry: { type: mongoose.Schema.ObjectId, ref: "country" },
+    nameCity: String,
+    latitudeCity: String,
+    longitudeCity: String,
+    descriptionCity: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },
+}
+
+country: {
+    idCountry: ObjectId(), // Auto increment
+    nameCountry: String,
+    flagCountry: String,
+    latitudeCountry: String,
+    longitudeCountry: String,
+    descriptionCountry: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },
+}
+
+profile: {
+    idProfile: ObjectId(), // Auto increment
+    nameProfile: String,
+    descriptionProfile: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },
+}
+
+state: {
+    idState: ObjectId(), // Auto increment
+    nameState: String,
+    descriptionState: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },  
+}
+
+schedule: {
+    idSchedule: ObjectId(), // Auto increment
+    nameSchedule: String,
+    dateStartSchedule: { type: Date },
+    dateEndSchedule: { type: Date },
+    subjectSchedule: String,
+    idUserClient: { type: mongoose.Schema.ObjectId, ref: "user" },
+    idUserProfessional: { type: mongoose.Schema.ObjectId, ref: "user" },
+    idCountry: { type: mongoose.Schema.ObjectId, ref: "country" },
+    idCity: { type: mongoose.Schema.ObjectId, ref: "city" },
+    locationAddress: String,
+    locationLatitude: String,
+    locationLongitude: String,
+    descriptionSchedule: String,
+    files:[
+        {
+            idFile: { type: mongoose.Schema.ObjectId, ref: "file" },
+        }
+    ],
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },  
+}
+
+file: {
+    idfile: ObjectId(), // Auto increment
+    namefile: String,
+    descriptionfile: String,
+    urlFile: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },  
+}
+
+chat: {
+    chat.ObjectId(): [{
+        idUserClient: { type: mongoose.Schema.ObjectId, ref: "user" },
+        idUserProfessional: { type: mongoose.Schema.ObjectId, ref: "user" },
+        mesaggeChat: String,
+        idState: { type: mongoose.Schema.ObjectId, ref: "stateMesagges" },
+        dateCreated: { type: Date, default: Date.now },
+        dateUpdated: { type: Date, default: Date.now },
+    }]
+}
+
+conversation: {
+    conversation.ObjectId(): [{
+        idUserClient: { type: mongoose.Schema.ObjectId, ref: "user" },
+        idUserProfessional: { type: mongoose.Schema.ObjectId, ref: "user" },
+        dateCreated: { type: Date, default: Date.now },
+        dateUpdated: { type: Date, default: Date.now },
+        chats: [{
+            idChat: { type: mongoose.Schema.ObjectId, ref: "chat" },
+            idState: { type: mongoose.Schema.ObjectId, ref: "stateMesagges" },
+        }]
+    }]
+}
+
+stateMesagges: {
+    idStateMesagges: ObjectId(), // Auto increment
+    nameStateMesagges: String,
+    descriptionStateMesagges: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },  
+}
+
+speciality: {
+    idSpecialty: ObjectId(), // Auto increment
+    nameSpecialty: String,
+    descriptionSpecialty: String,
+    dateCreated: { type: Date, default: Date.now },
+    dateUpdated: { type: Date, default: Date.now },  
+}
+
+specialitiesProfessional: {
+    idUser.ObjectId(): [
+        {
+            idSpecialty: { type: mongoose.Schema.ObjectId, ref: "speciality" },
+        }
+    ]
+}
